@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
-ext.android_support_version = '26.1.0'
+ext.android_support_version = '28.0.0'
 ext.arch_version = '1.0.0'
 ext.retrofit_version = '2.3.0'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+   // buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.news.droiddebo.mytimes"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 5
         versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,10 +23,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each {
-        it.buildConfigField('String', 'NEWS_API_KEY', MY_NEWS_API_KEY)
+    /*buildTypes.each {
+        it.buildConfigField('String', 'NEWS_API_KEY', "b46d2d93dc4d474aaa81864563640575")
+        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', "\"6df0...9ac\""
         //Put your key in the gradle.properties (Project Properties)
-    }
+    }*/
 }
 
 dependencies {
