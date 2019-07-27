@@ -19,16 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
 
-        <ImageView
-            android:id="@+id/iv_card_info"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:contentDescription="@string/iv_card_my_info"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile_pic" />
-
         <TextView
             android:id="@+id/tv_card_info"
             android:layout_width="match_parent"
@@ -37,10 +27,9 @@
             android:layout_marginEnd="@dimen/tv_card_layout_margin"
             android:layout_marginRight="@dimen/tv_card_layout_margin"
             android:layout_marginTop="@dimen/tv_card_layout_margin"
-            android:layout_toEndOf="@id/iv_card_info"
-            android:layout_toRightOf="@id/iv_card_info"
+
             android:gravity="center"
-            android:text="@string/debajyoti_basak"
+            android:text="@string/amuri"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="normal" />

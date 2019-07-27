@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,18 +20,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikepenz.crossfadedrawerlayout.view.CrossfadeDrawerLayout;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.interfaces.ICrossfader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
+import com.mikepenz.materialdrawer.util.DrawerUIUtils;
+import com.mikepenz.materialize.util.UIUtils;
 import com.news.droiddebo.mytimes.MyTimesApplication;
 import com.news.droiddebo.mytimes.R;
 import com.news.droiddebo.mytimes.adapter.DataAdapter;
@@ -54,9 +62,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+
+
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private String[] SOURCE_ARRAY = {"google-news-in", "bbc-news", "the-hindu", "the-times-of-india",
+    private String[] SOURCE_ARRAY = {"google-news", "bbc-news", "al-jazeera-english", "the-washington-times",
             "buzzfeed", "mashable", "mtv-news", "bbc-sport", "espn-cric-info", "talksport", "medical-news-today",
             "national-geographic", "crypto-coins-news", "engadget", "the-next-web", "the-verge", "techcrunch", "techradar", "ign", "polygon"};
     private String SOURCE;
@@ -71,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private Parcelable listState;
     private Typeface montserrat_regular;
     private TextView mTitle;
+    private CrossfadeDrawerLayout crossfadeDrawerLayout = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +101,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         onLoadingSwipeRefreshLayout();
 
         createDrawer(savedInstanceState, toolbar, montserrat_regular);
+
     }
+
 
     private void createToolbar() {
         toolbar = findViewById(R.id.toolbar_main_activity);
@@ -105,20 +120,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        int numberOfColumns=2;
+        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,numberOfColumns));
     }
 
     private void createDrawer(Bundle savedInstanceState, final Toolbar toolbar, Typeface montserrat_regular) {
         PrimaryDrawerItem item0 = new PrimaryDrawerItem().withIdentifier(0).withName("GENERAL")
                 .withTypeface(montserrat_regular).withSelectable(false);
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Google News India")
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Google News")
                 .withIcon(R.drawable.ic_googlenews).withTypeface(montserrat_regular);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("BBC News")
                 .withIcon(R.drawable.ic_bbcnews).withTypeface(montserrat_regular);
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName("The Hindu")
-                .withIcon(R.drawable.ic_thehindu).withTypeface(montserrat_regular);
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName("The Times of India")
-                .withIcon(R.drawable.ic_timesofindia).withTypeface(montserrat_regular);
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName("AL Jazeera English")
+                .withIcon(R.drawable.ic_aj_jazeera).withTypeface(montserrat_regular);
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName("Washington Times")
+                .withIcon(R.drawable.ic_ic_washington_post).withTypeface(montserrat_regular);
         SectionDrawerItem item5 = new SectionDrawerItem().withIdentifier(5).withName("ENTERTAINMENT")
                 .withTypeface(montserrat_regular);
         PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName("Buzzfeed")
@@ -174,14 +190,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.ic_back)
+                .withHeaderBackground(R.drawable.ic_launcher)
                 .withSavedInstance(savedInstanceState)
                 .build();
 
         result = new DrawerBuilder()
                 .withAccountHeader(accountHeader)
                 .withActivity(this)
+                .withDrawerLayout(R.layout.crossfade_drawer)
                 .withToolbar(toolbar)
+                .withDrawerWidthDp(72)
+                .withHasStableIds(true)
+                .withGenerateMiniDrawer(true)
+                .withTranslucentStatusBar(true)
+                .withActionBarDrawerToggleAnimated(true)
                 .withSelectedItem(1)
                 .addDrawerItems(item0, item1, item2, item3, item4, item5, item6, item7, item8, item9,
                         item10, item11, item12, item13, item14, item15, item16, item17, item18, item19,
@@ -295,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 openAboutActivity();
                                 break;
                             case 28:
-                                Intent browserSource = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/debo1994/MyTimes"));
+                               Intent browserSource = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Amuri-Bonface"));
                                 startActivity(browserSource);
                                 break;
                             case 29:
@@ -313,6 +335,44 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 })
                 .withSavedInstance(savedInstanceState)
                 .build();
+        //Setting crossfader drawer------------------------------------------------------------
+
+        crossfadeDrawerLayout = (CrossfadeDrawerLayout) result.getDrawerLayout();
+
+        //define maxDrawerWidth
+        crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
+
+        //add second view (which is the miniDrawer)
+        final MiniDrawer miniResult = result.getMiniDrawer();
+
+        //build the view for the MiniDrawer
+        View view = miniResult.build(this);
+
+        //set the background of the MiniDrawer as this would be transparent
+        view.setBackgroundColor(UIUtils.getThemeColorFromAttrOrRes(this, com.mikepenz.materialdrawer.R.attr.material_drawer_background, com.mikepenz.materialdrawer.R.color.material_drawer_background));
+
+        //we do not have the MiniDrawer view during CrossfadeDrawerLayout creation so we will add it here
+        crossfadeDrawerLayout.getSmallView().addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        //define the crossfader to be used with the miniDrawer. This is required to be able to automatically toggle open / close
+        miniResult.withCrossFader(new ICrossfader() {
+            @Override
+            public void crossfade() {
+                boolean isFaded = isCrossfaded();
+                crossfadeDrawerLayout.crossfade(400);
+
+                //only close the drawer if we were already faded and want to close it now
+                if (isFaded) {
+                    result.getDrawerLayout().closeDrawer(GravityCompat.START);
+                }
+            }
+
+            @Override
+            public boolean isCrossfaded() {
+                return crossfadeDrawerLayout.isCrossfaded();
+            }
+        });
+
     }
 
 
@@ -419,7 +479,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void sendEmail() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-        emailIntent.setData(Uri.parse("mailto: d.basak.db@gmail.com"));
+        emailIntent.setData(Uri.parse("mailto: amuribonface@gmail.com"));
         startActivity(Intent.createChooser(emailIntent, "Send feedback"));
     }
 

@@ -9,7 +9,7 @@ android {
    // buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.news.droiddebo.mytimes"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 5
         versionName "2.0"
@@ -22,6 +22,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     /*buildTypes.each {
         it.buildConfigField('String', 'NEWS_API_KEY', "b46d2d93dc4d474aaa81864563640575")
@@ -36,9 +40,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation "com.android.support:appcompat-v7:$android_support_version"
-    implementation('com.mikepenz:materialdrawer:5.9.2@aar') {
+    implementation('com.mikepenz:materialdrawer:6.0.3@aar') {
         transitive = true
     }
+
     implementation "com.android.support:appcompat-v7:$android_support_version"
     implementation "com.android.support:design:$android_support_version"
     implementation "com.android.support:recyclerview-v7:$android_support_version"
@@ -50,5 +55,7 @@ dependencies {
     implementation "com.android.support:support-v4:$android_support_version"
     implementation "com.android.support:support-vector-drawable:$android_support_version"
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation('com.mikepenz:crossfadedrawerlayout:1.0.1@aar')
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
 }
