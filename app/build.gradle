@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
    // buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.news.droiddebo.mytimes"
+        applicationId "com.news.myworld.allnews"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 5
@@ -19,7 +19,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
